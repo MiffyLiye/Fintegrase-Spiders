@@ -1,35 +1,50 @@
 const request = require('request-promise');
 const cheerio = require('cheerio');
+const iconv = require('iconv-lite');
+const _ = require('lodash');
 
 const host = 'http://bxjg.circ.gov.cn';
 const fixHost = (uri) => {
-    if (uri.startsWith('http')) {
-        return uri;
-    } else if (uri.startsWith('/')) {
-        return host + uri;
-    } else {
-        return `${host}/${uri}`;
-    }
+  if (uri.startsWith('http')) {
+    return uri;
+  } else if (uri.startsWith('/')) {
+    return host + uri;
+  } else {
+    return `${host}/${uri}`;
+  }
 };
 
-const spider = async () => {
-    const options = {
-        uri: fixHost('http://bxjg.circ.gov.cn/web/site0/tab5201/info4112312.htm'),
-        transform: body => cheerio.load(body)
-    };
-    return await request(options);
+const spider = async (uri) => {
+  const options = {
+    uri,
+    encoding: null,
+    transform: body => cheerio.load(iconv.decode(body, 'utf8'), {decodeEntities: false})
+  };
+  return await request(options);
 };
 
-spider()
-    .then($ => {
-        let links = $('a:contains("保险业经营情况表")');
-        let uris = [];
-        for (let i = 0; i < links.length; i++) {
-            uris.push(fixHost(links[i].attribs.href))
-        }
-        return uris;
-    })
-    .catch(e => {console.log(e)});
+const getArticle = async (uri) => {
+  const $ = await spider(uri);
 
+  const title = _.last($('td:contains("保险业经营情况表")').text().trim().split(/\s+/));
 
+  const publishedAt = _.first($('td:contains("发布时间：")').text().replace(/\s+/g, '').match(/发布时间：\d+-\d+-\d+/)).split('：')[1];
+
+  const anchor = $('span:contains("万元")');
+  const rows = anchor.text().replace(/\t+/g,'').trim().split(/\n{6,}/);
+  const data = [];
+  if (rows[0].trim().split(/\n+/).length === 1) {
+    data.push({name: '', value: rows[0].trim()});
+  }
+  for (let i = 1; i < rows.length - 1; i++) {
+    const cells = rows[i].trim().split(/\n+/);
+    data.push({name: cells[0], value: cells[1]})
+  }
+  const note = rows[rows.length - 1].split('：');
+  data.push({name: note[0], value: note[1].replace(/\n万元$/,'')});
+
+  return {title, uri, publishedAt, data};
+};
+
+module.exports = getArticle;
 
