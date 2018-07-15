@@ -1,0 +1,30 @@
+{
+  "name": "Fintegrase-Spiders",
+  "version": "1.0.1",
+  "description": "Spiders for Fintegrase API",
+  "keywords": [
+    "financial",
+    "information",
+    "spider"
+  ],
+  "license": "MIT",
+  "main": "src/index.js",
+  "author": "MiffyLiye",
+  "repository": "https://bitbucket.org/MiffyLiye/fintegrase-spiders",
+  "scripts": {
+    "upload-codecov": "codecov",
+    "test": "istanbul cover _mocha"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2"
+  },
+  "devDependencies": {
+    "chai": "*",
+    "codecov": "^3.0.1",
+    "istanbul": "*",
+    "mocha": "*",
+    "sinon": "*"
+  }
+}
