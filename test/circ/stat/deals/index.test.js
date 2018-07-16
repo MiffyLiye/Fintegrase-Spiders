@@ -7,6 +7,7 @@ describe('Get article uri list', function () {
     const uris = await getList();
     uris.should.be.an('array');
     uris.length.should.be.above(0);
+    uris[0].startsWith('http://bxjg.circ.gov.cn/').should.equal(true)
   });
 });
 
@@ -49,6 +50,6 @@ describe('Get article', function () {
     data[18].name.should.equal('资产总额');
     data[18].value.should.equal('1750355659.35');
 
-    data[19].name.should.equal('注');
+    data[19].name.should.equal('备注');
   });
 });
