@@ -2,6 +2,7 @@ const request = require('request-promise');
 const cheerio = require('cheerio');
 const iconv = require('iconv-lite');
 const _ = require('lodash');
+const moment = require('moment');
 
 const host = 'http://bxjg.circ.gov.cn';
 const fixHost = (uri) => {
@@ -48,7 +49,7 @@ const getArticle = async (uri) => {
   const note = _.drop(rows, lastLine + 1).join('\n').replace(/\n+/g,'\n');
   data.push({name: '备注', value: note.replace(/\n(单位:万元)?(万元)?$/,'')});
 
-  return {title, uri, publishedAt, data};
+  return {title, uri, publishedAt, retrievedAt: moment.utc().format('YYYY-MM-DDTHH:mm:ssZ'), data};
 };
 
 module.exports = getArticle;

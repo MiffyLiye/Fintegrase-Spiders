@@ -1,4 +1,5 @@
 const should = require('chai').should();
+const moment = require('moment');
 const getList = require('../../../../src/circ/stat/deals/getList');
 const getArticle = require('../../../../src/circ/stat/deals/getArticle');
 
@@ -13,13 +14,16 @@ describe('Get article uri list', function () {
 
 describe('Get article', function () {
   it('Should get article with uri', async () => {
-    const {title, uri, publishedAt, data} = await getArticle("http://bxjg.circ.gov.cn/web/site0/tab5201/info4112312.htm");
+    const {title, uri, publishedAt, retrievedAt, data} = await getArticle("http://bxjg.circ.gov.cn/web/site0/tab5201/info4112312.htm");
 
     uri.should.equal('http://bxjg.circ.gov.cn/web/site0/tab5201/info4112312.htm');
 
     title.should.equal('2018年1-5月保险业经营情况表');
 
     publishedAt.should.equal('2018-07-05');
+
+    moment(retrievedAt).isBefore(moment.utc().add(1, 'minute')).should.equal(true);
+    moment(retrievedAt).isAfter(moment.utc().subtract(1, 'minute')).should.equal(true);
 
     data.should.be.an('array');
     data.length.should.be.above(0);
