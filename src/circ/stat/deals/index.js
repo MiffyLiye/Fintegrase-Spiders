@@ -1,9 +1,7 @@
 const getList = require('./getList');
 const getArticle = require('./getArticle');
 const request = require('request-promise');
-
-const fintegraseHost = process.env.FINTEGRASE_HOST || 'http://localhost:7070';
-const authorizationKey = process.env.ADMIN_AUTH_TOKEN || '5678';
+const {fintegraseHost, authorizationKey} = require('../../../config');
 
 getList().then(async uris => {
   for (let i = 0; i < uris.length; i++) {
