@@ -3,7 +3,7 @@ const moment = require('moment');
 const getList = require('../../../../src/circ/stat/life/getList');
 const getArticle = require('../../../../src/circ/stat/life/getArticle');
 
-describe('Get article uri list', function () {
+describe('Get 人身保险公司原保险保费收入情况表 uri list', function () {
   it('Should get articles uri list', async () => {
     const uris = await getList();
     uris.should.be.an('array');
@@ -12,7 +12,7 @@ describe('Get article uri list', function () {
   });
 });
 
-describe('Get article', function () {
+describe('Get 人身保险公司原保险保费收入情况表 article', function () {
   it('Should get article with uri', async () => {
     const {title, uri, publishedAt, retrievedAt, data} = await getArticle("http://bxjg.circ.gov.cn/web/site0/tab5203/info4112314.htm");
 

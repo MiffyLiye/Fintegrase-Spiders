@@ -12,8 +12,7 @@
   "author": "MiffyLiye",
   "repository": "https://bitbucket.org/MiffyLiye/fintegrase-spiders",
   "scripts": {
-    "upload-codecov": "codecov",
-    "test": "istanbul cover _mocha"
+    "test": "mocha"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
@@ -26,7 +25,6 @@
   "devDependencies": {
     "chai": "*",
     "codecov": "^3.0.1",
-    "istanbul": "*",
     "mocha": "*",
     "sinon": "*"
   }
