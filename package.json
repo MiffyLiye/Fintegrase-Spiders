@@ -12,7 +12,7 @@
   "author": "MiffyLiye",
   "repository": "https://bitbucket.org/MiffyLiye/fintegrase-spiders",
   "scripts": {
-    "test": "mocha"
+    "test": "nyc mocha"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
@@ -26,6 +26,7 @@
     "chai": "*",
     "codecov": "^3.0.1",
     "mocha": "*",
+    "nyc": "^12.0.2",
     "sinon": "*"
   }
 }
