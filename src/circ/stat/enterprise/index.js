@@ -1,7 +1,9 @@
 const getList = require('./getList');
 const getArticle = require('./getArticle');
-const {sync} = require('../../../config');
+const {sync} = require('../../../utils');
 
 const category = 'circ.stat.enterprise';
 
-sync(getList, getArticle, category).catch(err => console.error(err));
+const run = () => sync(getList, getArticle, category).catch(err => console.error(err));
+
+module.exports = run;

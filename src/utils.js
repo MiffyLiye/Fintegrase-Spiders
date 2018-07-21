@@ -2,16 +2,6 @@ const request = require('request-promise');
 const cheerio = require('cheerio');
 const iconv = require('iconv-lite');
 
-const host = 'http://bxjg.circ.gov.cn';
-const fixHost = (uri) => {
-  if (uri.startsWith('http')) {
-    return uri;
-  } else if (uri.startsWith('/')) {
-    return host + uri;
-  } else {
-    return `${host}/${uri}`;
-  }
-};
 const fintegraseHost = process.env.FINTEGRASE_HOST || 'http://localhost:7070';
 const authorizationKey = process.env.ADMIN_AUTH_TOKEN || 'admin_auth_key';
 
@@ -60,8 +50,8 @@ const sync = async (getList, getArticle, category) => {
       };
       await request(options);
     }
-    console.log('FINISHING');
+    console.log(`FINISHING ${category}`);
   });
 };
 
-module.exports = {host, fixHost, sync, spider};
+module.exports = {sync, spider};

@@ -1,4 +1,5 @@
-const {spider, fixHost} = require('../../../config');
+const {spider} = require('../../../utils');
+const {fixHost} = require('../../site');
 
 const getList = async () => {
   const $ = await spider(fixHost('/web/site0/tab5202/'));

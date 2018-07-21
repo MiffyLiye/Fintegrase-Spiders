@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const moment = require('moment');
 
-const {spider} = require('../../../config');
+const {spider} = require('../../../utils');
 
 const escape = (s) => {
   let res = (s || '').trim();

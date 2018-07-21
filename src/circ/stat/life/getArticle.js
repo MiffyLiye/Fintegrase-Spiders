@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const moment = require('moment');
 
-const {spider} = require('../../../config');
+const {spider} = require('../../../utils');
 
 const getArticle = async (uri) => {
   const $ = await spider(uri);
