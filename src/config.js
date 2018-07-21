@@ -24,4 +24,44 @@ const spider = async (uri) => {
   return await request(options);
 };
 
-module.exports = {host, fixHost, fintegraseHost, authorizationKey, spider};
+const alreadyExists = async (category, uri) => {
+  const options = {
+    uri: `${fintegraseHost}/categories/${category}/entries`,
+    method: 'GET',
+    headers: {
+      'Authorization': authorizationKey
+    },
+    qs: {
+      query: JSON.stringify({uri: uri})
+    },
+    json: true
+  };
+  const res = await request(options);
+  return res.data.length > 0;
+};
+
+const sync = async (getList, getArticle, category) => {
+  getList().then(async uris => {
+    for (let i = 0; i < uris.length; i++) {
+      if (alreadyExists(category, uris[i])) {
+        console.log('ALREADY EXISTS', uris[i]);
+        break;
+      }
+      const document = await getArticle(uris[i]);
+      console.log(uris[i], document.title, document.uri);
+      const options = {
+        uri: `${fintegraseHost}/categories/${category}/entries`,
+        method: 'POST',
+        headers: {
+          'Authorization': authorizationKey
+        },
+        body: document,
+        json: true
+      };
+      await request(options);
+    }
+    console.log('FINISHING');
+  });
+};
+
+module.exports = {host, fixHost, sync, fintegraseHost, authorizationKey, spider};
