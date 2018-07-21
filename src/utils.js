@@ -36,7 +36,7 @@ const sync = async (getList, getArticle, category) => {
   await delay(1000);
   const uris = await getList();
   for (let i = 0; i < uris.length; i++) {
-    if (alreadyExists(category, uris[i])) {
+    if (await alreadyExists(category, uris[i])) {
       console.log(new Date(), 'ALREADY EXISTS', uris[i]);
       break;
     }
