@@ -5,6 +5,8 @@ const iconv = require('iconv-lite');
 const fintegraseHost = process.env.FINTEGRASE_HOST || 'http://localhost:7070';
 const authorizationKey = process.env.ADMIN_AUTH_TOKEN || 'admin_auth_key';
 
+const delay = (time) => new Promise((resolve) => setTimeout(resolve, time));
+
 const spider = async (uri) => {
   const options = {
     uri,
@@ -31,27 +33,28 @@ const alreadyExists = async (category, uri) => {
 };
 
 const sync = async (getList, getArticle, category) => {
-  getList().then(async uris => {
-    for (let i = 0; i < uris.length; i++) {
-      if (alreadyExists(category, uris[i])) {
-        console.log('ALREADY EXISTS', uris[i]);
-        break;
-      }
-      const document = await getArticle(uris[i]);
-      console.log(uris[i], document.title, document.uri);
-      const options = {
-        uri: `${fintegraseHost}/categories/${category}/entries`,
-        method: 'POST',
-        headers: {
-          'Authorization': authorizationKey
-        },
-        body: document,
-        json: true
-      };
-      await request(options);
+  await delay(1000);
+  const uris = await getList();
+  for (let i = 0; i < uris.length; i++) {
+    if (alreadyExists(category, uris[i])) {
+      console.log(new Date(), 'ALREADY EXISTS', uris[i]);
+      break;
     }
-    console.log(`FINISHING ${category}`);
-  });
+    await delay(1000);
+    const document = await getArticle(uris[i]);
+    console.log(new Date(), uris[i], document.title, document.uri);
+    const options = {
+      uri: `${fintegraseHost}/categories/${category}/entries`,
+      method: 'POST',
+      headers: {
+        'Authorization': authorizationKey
+      },
+      body: document,
+      json: true
+    };
+    await request(options);
+  }
+  console.log(new Date(), `FINISHING ${category}`);
 };
 
 module.exports = {sync, spider};
