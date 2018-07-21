@@ -64,4 +64,4 @@ const sync = async (getList, getArticle, category) => {
   });
 };
 
-module.exports = {host, fixHost, sync, fintegraseHost, authorizationKey, spider};
+module.exports = {host, fixHost, sync, spider};
