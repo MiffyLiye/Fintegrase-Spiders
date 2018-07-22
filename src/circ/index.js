@@ -9,6 +9,7 @@ const run = async () => {
     await require('./regulations/law/index')();
     await require('./regulations/administration/index')();
     await require('./regulations/division/index')();
+    await require('./regulations/norm/index')();
     await require('./regulations/other/index')();
   } catch (err) {
     console.error(err);
