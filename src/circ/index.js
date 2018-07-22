@@ -7,6 +7,7 @@ const run = async () => {
     await require('./stat/property/index')();
     await require('./stat/regional/index')();
     await require('./regulations/law/index')();
+    await require('./regulations/administration/index')();
   } catch (err) {
     console.error(err);
   }
